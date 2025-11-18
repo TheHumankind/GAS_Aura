@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Character/AuraCharacterBase.h"
 #include "Iteraction/EnemyInterface.h"
+
 #include "AuraEnemy.generated.h"
 
 /**
@@ -25,5 +27,7 @@ public:
 	
 	virtual void UnHighlightActor() override;
 
+public:
+	virtual void InitAbilityActorInfo() override;
 
 };
