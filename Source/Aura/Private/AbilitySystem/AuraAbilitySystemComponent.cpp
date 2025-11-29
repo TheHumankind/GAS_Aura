@@ -16,6 +16,10 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 		10.f,
 		FColor::Red,
 		FString::Printf(TEXT("Attribute: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString()));
+	GEngine->AddOnScreenDebugMessage(-1,
+		10.f,
+		FColor::Green,
+		FString::Printf(TEXT("Attribute: %s"), *GetOwner()->GetActorNameOrLabel()));
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
