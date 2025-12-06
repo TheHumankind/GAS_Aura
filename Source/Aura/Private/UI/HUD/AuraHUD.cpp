@@ -4,6 +4,7 @@
 #include "UI/HUD/AuraHUD.h"
 
 #include "UI/Widget/AuraUserWidget.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WidgetControllerParams)
@@ -11,13 +12,21 @@ UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetCont
 	if (OverlayWidgetController == nullptr)
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
-		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WidgetControllerParams);
 		OverlayWidgetController->BindCallbacksToDependencies();
-		return OverlayWidgetController;
 	}
-
 	return OverlayWidgetController;
+}
+
+UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return AttributeMenuWidgetController;
 }
 
 void AAuraHUD::InitOverlay(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
@@ -29,10 +38,16 @@ void AAuraHUD::InitOverlay(APlayerController* PlayerController, APlayerState* Pl
 	OverlayWidget = Cast<UAuraUserWidget>(Widget);
 
 	const FWidgetControllerParams WidgetControllerParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
+	
 	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
-
+	AttributeMenuWidgetController = GetAttributeMenuWidgetController(WidgetControllerParams);
+	
 	OverlayWidget->SetWidgetController(WidgetController);
+
+	
 	WidgetController->BroadcastInitialValues();
+	AttributeMenuWidgetController->BroadcastInitialValues();
+	
 	Widget->AddToViewport();
 }
 

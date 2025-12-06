@@ -43,6 +43,10 @@ struct FEffectProperties
 	
 };
 
+//Def a static pointer that generic to any function signature
+template <class T>
+using TAttributeFunctionPointer = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
@@ -60,6 +64,8 @@ public:
 	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	TMap<FGameplayTag, TAttributeFunctionPointer<FGameplayAttribute()>> TagsToAttributes;
 
 	// Replication Functions (Need for properties server/online replication)
 	
